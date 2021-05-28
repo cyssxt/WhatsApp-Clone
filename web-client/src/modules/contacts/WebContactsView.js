@@ -23,25 +23,30 @@ const WebContactsView = ({ onChatCloseClick, onItemClick }) => {
   }, []);
 
   const getRegisteredUsers = () => {
-    getLoggedInUserList()
-      .then(async (res) => {
-        console.log("User List Response => ", res.data);
-        if (res.data.success) {
-          var userList = res.data.data;
-          var ownerID = await getLocalData(webConstants.USER_ID);
-
-          for (let index = 0; index < userList.length; index++) {
-            const user = userList[index];
-            if (user.userId === ownerID) {
-              userList.splice(index, 1);
-            }
-          }
-          setContacts(userList);
-        }
-      })
-      .catch((err) => {
-        console.log("User List Error => ", err);
-      });
+    setContacts([{
+      userName:"222",
+      phoneNumber:"15250986650",
+      numberType:"MOBILE"
+    }])
+    // getLoggedInUserList()
+    //   .then(async (res) => {
+    //     console.log("User List Response => ", res.data);
+    //     if (res.data.success) {
+    //       var userList = res.data.data;
+    //       var ownerID = await getLocalData(webConstants.USER_ID);
+    //
+    //       for (let index = 0; index < userList.length; index++) {
+    //         const user = userList[index];
+    //         if (user.userId === ownerID) {
+    //           userList.splice(index, 1);
+    //         }
+    //       }
+    //       setContacts(userList);
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log("User List Error => ", err);
+    //   });
   };
 
   return (

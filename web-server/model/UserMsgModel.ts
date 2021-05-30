@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
     {
-        userId: { type: String, required: true },
+        senderId: { type: String, required: true },
         msgId:{type:String,required:true},
         content: { type: Schema.Types.Mixed, required: false },
         createdAt: { type:Date, required:true},

@@ -11,7 +11,7 @@ import {createSocket} from "./controller/SocketConnections";
 import {getUserId} from "./controller/authController";
 import {getChats} from "./controller/ChatController";
 import {getContacts} from "./controller/ContactController";
-import {getUserInfo} from "./controller/UserInfoController";
+import {getUserInfo, logout} from "./controller/UserInfoController";
 import {getRecentMsg} from "./controller/UserMsgController";
 // Express setup -----
 const app = express();
@@ -28,6 +28,7 @@ app.get("/getUserId", getUserId);
 app.get("/contacts/:userId", getContacts);
 app.get("/chats/:userId", getChats);
 app.get("/getUserInfo/:userId", getUserInfo);
+app.get("/logout/:userId", logout);
 app.get("/getRecentMsg/:userId/:remoteJid", getRecentMsg);
 
 const port = process.env.PORT || 3000;

@@ -6,12 +6,10 @@ export const createSocket = (http:any)=> {
     const io = require("socket.io")(http)
     io.on("connection", async (socket: any) => {
         let {userId} = socket.handshake.query;
-        console.log(`${userId}-${socket}`)
 
         if(!SocketMap[userId]) {
+            SocketMap[userId] = socket;
             let connect = await createWAConnection(userId,SocketMap);
-            console.log('-------')
-            console.log(connect);
             ConnectionMap[userId] = connect;
         }
         SocketMap[userId] = socket;

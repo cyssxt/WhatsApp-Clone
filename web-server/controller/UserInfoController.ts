@@ -30,6 +30,24 @@ export const getUserInfo = async (req:any,res:any)=>{
     return res.status(200).json({data:await UserInfoModel.findOne({userId})})
 }
 
+export const logout = async(req:any,res:any)=>{
+    let {userId} = req.params
+    if(ConnectionMap[userId]) {
+        await ConnectionMap[userId].connection.logout()
+        await ConnectionMap[userId].connection.close();
+        delete ConnectionMap[userId]
+    }
+    if(SocketMap[userId]) {
+        SocketMap[userId].disconnect()
+        delete SocketMap[userId]
+    }
+
+    let authPath = `auth/${userId}.json`
+    if(fs.existsSync(authPath)){
+        fs.unlinkSync(authPath);
+    }
+    return res.status(200).json({})
+}
 export const getQrCode = async (userId:string)=>{
     let user = await UserInfoModel.findOne({userId});
     // @ts-ignore
@@ -113,9 +131,6 @@ export const createWAConnection = async (userId:string,SocketMap:any)=>{
     conn.connectOptions.maxRetries = 10
     conn.chatOrderingKey = waChatKey(true) // order chats such that pinned chats are on top
     conn.on('chats-received', async ({ hasNewChats }:{hasNewChats:any}) => {
-        console.log("------")
-        console.log(JSON.stringify(conn.chats))
-        console.log("------")
         await updateChat(userId,JSON.parse(JSON.stringify(conn.chats)))
         SocketMap[userId].emit(EventConstant.CHAT_LIST,conn.chats)
         console.log(`you have ${conn.chats.length} chats, new chats available: ${hasNewChats}`)

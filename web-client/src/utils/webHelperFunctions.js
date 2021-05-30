@@ -1,12 +1,12 @@
 import { webConstants } from "./webConstants";
-import moment from "moment"; 
-import io from "socket.io-client"; 
+import moment from "moment";
+import io from "socket.io-client";
 
 export const getTimeInFormat = time => {
   if (time === "") {
     return "";
   }
-  const newTime = moment(time).format(webConstants.TIME_FORMAT);
+  const newTime = moment(time*1000).format(webConstants.TIME_FORMAT);
   return newTime;
 };
 
@@ -90,11 +90,11 @@ export const getUserTypeChatRoom = (item, userId) => {
     // );
     return webConstants.FRIEND;
   }
-}; 
+};
 
-export function getSocket() {
-  return io.connect(webConstants.API.SOCKET_URL);
-}
+// export function getSocket() {
+//   return io.connect(webConstants.API.SOCKET_URL,{path:''});
+// }
 
 export const getDateTimeStatusFormat = time => {
   if (time === '') {

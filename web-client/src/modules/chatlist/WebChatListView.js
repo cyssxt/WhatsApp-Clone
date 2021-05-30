@@ -1,14 +1,10 @@
 import React, { useState, useEffect, useReducer } from "react";
 import WebChatListItem from "./WebChatListItem";
 import { webConstants } from "../../utils/webConstants";
-// import {
-//   WHITE,
-//   LIGHT_GREEN
-// } from "../../utils/webColors";
 import EmptyComponent from "../../components/WebEmptyComponent";
 import { getChatList } from "../../api/webApiController";
-import { getLocalData, getSocket } from "../../utils/webHelperFunctions";
-import { ListItem, Card, CardContent } from "@material-ui/core";
+import { getLocalData
+} from "../../utils/webHelperFunctions";
 import { WHITE } from "../../utils/webColors";
 import { List, CellMeasurer, CellMeasurerCache } from "react-virtualized";
 import {
@@ -18,18 +14,17 @@ import {
   CHAT_ITEM,
   REFRESH,
 } from "./WebChatListReducer";
-// import { makeStyles } from "@material-ui/core/styles";
-
-var socket = getSocket();
+import {getSocket} from "../../api/socketApi";
+import EventConstant from "../../constants/EventConstant";
 const cache = new CellMeasurerCache({
   fixedWidth: true,
   defaultHeight: 60,
 });
 
 const WebChatListView = ({ onItemClick, userChatList }) => {
-  var [state, dispatch] = useReducer(chatListReducer, initialChatListState);
-
-  var { chatList, chatItem, refresh, userId } = state;
+  const [state, dispatch] = useReducer(chatListReducer, initialChatListState);
+  const [currentIndex,setCurrentIndex] = useState(-1);
+  const { chatList, chatItem, refresh, userId } = state;
 
   useEffect(() => {
     listenSocket();
@@ -42,26 +37,18 @@ const WebChatListView = ({ onItemClick, userChatList }) => {
   }, [refresh]);
 
   useEffect(() => {
-    // console.log("Chat List Changed == ", JSON.stringify(chatList));
     if (chatItem != "") {
       renderChats();
     }
   }, [chatItem]);
 
-  function getUserId() {
-    const userId = getLocalData(webConstants.USER_ID);
-    dispatch({ type: webConstants.USER_ID, payload: userId });
-    return userId;
-  }
-
   const getLatestChats = () => {
-    getUserId();
     getChatList()
       .then((res) => {
         // console.log("LIST RESPONSE => " + JSON.stringify(res.data.data));
-        if (res.status === 200) {
-          userChatList(res.data.data);
-          dispatch({ type: CHAT_LIST, payload: res.data.data });
+        if (res.status === 200 && res.data.data) {
+          userChatList(res.data.data.extend);
+          dispatch({ type: CHAT_LIST, payload: res.data.data.extend });
         }
         dispatch({ type: REFRESH, payload: false });
       })
@@ -80,10 +67,6 @@ const WebChatListView = ({ onItemClick, userChatList }) => {
         const element = chatArray[i];
         if (chatItem && element.roomId === chatItem.roomId) {
           // Increment unread count
-          chatItem = await calcUnreadCount(chatItem, element.chatUnreadCount);
-
-          // Since chat item received is an object to convert it to array and they re initialise
-          // if (chatItem.chat.length <= 0) {
           chatItem.chat = [chatItem.chat];
           // }
           console.log("Selected Chat Received => ", JSON.stringify(chatItem));
@@ -95,10 +78,6 @@ const WebChatListView = ({ onItemClick, userChatList }) => {
 
       if (!isMatch && chatItem.chatUnreadCount.type != 'reset') {
         // Increment unread count
-        chatItem = await calcUnreadCount(chatItem, 0);
-
-        // Since chat item received is an object to convert it to array and they re initialise
-        // if (chatItem.chat.length <= 0) {
         chatItem.chat = [chatItem.chat];
         // }
         console.log("Selected Chat Received => ", JSON.stringify(chatItem));
@@ -121,8 +100,12 @@ const WebChatListView = ({ onItemClick, userChatList }) => {
   }
 
   function listenSocket() {
-    // socket.removeListener(webConstants.CHAT_LIST);
+    let socket = getSocket();
+    socket.removeListener(EventConstant.CHAT_LIST);
     socket.on(webConstants.CHAT_LIST, (chatItem) => {
+      debugger
+      console.log('-----')
+      console.log(chatItem)
       dispatch({ type: CHAT_ITEM, payload: chatItem });
     });
   }
@@ -179,22 +162,18 @@ const WebChatListView = ({ onItemClick, userChatList }) => {
             <WebChatListItem
               item={chatList[index]}
               position={index}
-              onItemClick={onItemClick}
+              currentIndex={currentIndex}
+              onItemClick={(item)=>{
+                onItemClick(item);
+                setCurrentIndex(index)
+                }
+              }
             />
           </CellMeasurer>
         )}
         overscanRowCount={0}
         data={refresh}
       />
-
-      {/* {chatList.map(function(item, i) {
-        return (
-          <WebChatListItem item={item} position={i} onItemClick={onItemClick} />
-        );
-      })} */}
-      {/* <Button className={classes.btnView}>
-        <img src={CHAT} className={classes.thumbView} />
-      </Button> */}
     </div>
   );
 };

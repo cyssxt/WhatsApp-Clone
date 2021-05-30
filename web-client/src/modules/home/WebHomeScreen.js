@@ -1,25 +1,15 @@
 import React, { useState, useEffect } from "react";
 import {
   APP_BG_COLOR,
-  WHITE,
-  LIGHT_GRAY,
-  LIGHT_GRAY_0,
-  SHIMMER_GRAY,
   LIGHT_GREEN,
   GRAY,
 } from "../../utils/webColors";
 import WebChatListView from "../chatlist/WebChatListView";
 import WebChatRoomScreen from "../chatroom/WebChatRoomScreen";
 import { Divider, Card, Paper } from "@material-ui/core";
-import WebEmptyComponent from "../../components/WebEmptyComponent";
 import WebEmptyRoomComponent from "../../components/WebEmptyRoomComponent";
 import WebChatListHeader from "../chatlist/WebChatListHeader";
 import { webConstants } from "../../utils/webConstants";
-import { getSocket } from "../../utils/webHelperFunctions";
-import {
-  detectUserActivity,
-  sendPageLoadStatus,
-} from "../../utils/UserActivityDetector";
 import WebChatSearchBox from "../chatlist/WebChatSearchBox";
 import WebContactsView from "../contacts/WebContactsView";
 import { Animated } from "react-animated-css";
@@ -34,9 +24,6 @@ const WebHomeScreen = () => {
   const [showStatus, setShowStatus] = useState(false);
 
   useEffect(() => {
-    detectUserActivity();
-    sendPageLoadStatus();
-    // return userActivity.stop();
   }, []);
 
   function mainUserChatList(chatList) {
@@ -100,21 +87,6 @@ const WebHomeScreen = () => {
   }
 
   return (
-    <html>
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-        />
-        <meta
-          name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width"
-        />
-      </head>
       <div style={styles.parentView}>
         <div style={styles.paperView} elevation={webConstants.PAPER_ELEVATION}>
           <div style={styles.leftDivStyle}>
@@ -130,21 +102,16 @@ const WebHomeScreen = () => {
             />
           </div>
           <Divider style={styles.dividerStyle} />
-
-          <Animated
-            animationIn="slideInLeft"
-            animationOut="slideOutLeft"
-            animationInDuration={400}
-            animationOutDuration={200}
-            isVisible={contactsVisible}
-            animateOnMount={contactsVisible}
-            style={{ width: "30%", position: "absolute", height: "100%" }}
-          >
-            <WebContactsView
-              onChatCloseClick={toggleContacts}
-              onItemClick={onContactItemClick}
-            />
-          </Animated>
+          {
+            contactsVisible &&
+            <div
+                style={{ width: "30%", position: "absolute", height: "100%" }}>
+              <WebContactsView
+                onChatCloseClick={toggleContacts}
+                onItemClick={onContactItemClick}
+                />
+            </div>
+          }
         </div>
 
         <div style={styles.roomDivStyle}>
@@ -170,7 +137,6 @@ const WebHomeScreen = () => {
         </Animated>
         {/* )} */}
       </div>
-    </html>
   );
 };
 

@@ -7,8 +7,8 @@ import {
   RED
 } from "../../utils/webColors";
 import USER from "../../assets/images/user.png";
-import { getContactsChatModel } from "../../utils/webHelperModels";
 import { Typography, Avatar } from "@material-ui/core";
+import moment from "moment";
 
 const WebContactsItem = ({ item, onItemClick }) => {
   return (
@@ -40,17 +40,17 @@ const WebContactsItem = ({ item, onItemClick }) => {
           marginLeft: 10
         }}
       >
-        <Typography numberOfLines={1} style={styles.userName}>
-          {item.userName}
+        <Typography  style={styles.userName}>
+          {item.name}
         </Typography>
-        <Typography numberOfLines={2} style={styles.userMessage}>
-          {item.phoneNumber}
+        <Typography style={styles.userMessage}>
+          {item.jid.split("@")[0]}
         </Typography>
       </div>
       <div style={{ display: "flex", flex: 0.2, justifyContent: "center" }}>
-        <Typography style={styles.userTime}>{item.time}</Typography>
+        {/*<Typography style={styles.userTime}>{item.t}{moment(item.t*1000).format("MM:DD HH:mm A")}</Typography>*/}
         <Typography style={styles.textMsgCount}>
-          {item.numberType.toUpperCase()}
+          {item.index}
         </Typography>
         {item.msgIcon != "" && (
           <Typography

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { webConstants } from "../../utils/webConstants";
 import ContactsHeaderView from "./WebContactsHeaderView";
 import ContactsItem from "./WebContactsItem";
-import { getLoggedInUserList } from "../../api/webApiController";
+import {getContacts, getLoggedInUserList} from "../../api/webApiController";
 import { getLocalData } from "../../utils/webHelperFunctions";
 import EmptyComponent from "../../components/WebEmptyComponent";
 import { Divider } from "@material-ui/core";
@@ -23,11 +23,20 @@ const WebContactsView = ({ onChatCloseClick, onItemClick }) => {
   }, []);
 
   const getRegisteredUsers = () => {
-    setContacts([{
-      userName:"222",
-      phoneNumber:"15250986650",
-      numberType:"MOBILE"
-    }])
+    getContacts().then(async (res)=>{
+      let userList = res.data.data.extend;
+      let contacts = [];
+      for (let key in userList) {
+        const user = userList[key];
+        contacts.push(user)
+      }
+      setContacts(contacts);
+    })
+    // setContacts([{
+    //   userName:"222",
+    //   phoneNumber:"15250986650",
+    //   numberType:"MOBILE"
+    // }])
     // getLoggedInUserList()
     //   .then(async (res) => {
     //     console.log("User List Response => ", res.data);

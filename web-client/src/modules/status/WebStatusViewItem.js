@@ -23,10 +23,10 @@ const WebStatusViewItem = ({ style, position }) => {
           marginLeft: '3%',
         }}
       >
-        <Typography numberOfLines={1} style={styles.userName}>
+        <Typography  style={styles.userName}>
           My Status
         </Typography>
-        <Typography numberOfLines={2} style={styles.userMessage}>
+        <Typography style={styles.userMessage}>
           today at 8:26 PM
         </Typography>
       </div>

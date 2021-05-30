@@ -8,10 +8,8 @@ import {
   LIGHT_GREEN,
   TEXT_TITLE
 } from "../../utils/webColors";
-import PROFILE from "../../assets/images/profile2.jpg";
-import { getTimeInFormat } from "../../utils/webHelperFunctions";
-import { Avatar, Card, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import {getDateTimeInFormat} from "../../utils/webHelperFunctions";
+import { Card, Typography } from "@material-ui/core";
 
 const ChatRoomLeftItem = ({ item, styleList }) => {
   // const styles = useState();
@@ -20,10 +18,10 @@ const ChatRoomLeftItem = ({ item, styleList }) => {
     <div style={Object.assign({}, styles.parentView, styleList)}>
       {/* <Avatar style={styles.profileImage} src={PROFILE} /> */}
       <Card style={styles.cardView} variant={'elevation'} elevation={0.9}>
-          <Typography style={styles.userMessage}>{item.chatMessage}</Typography>
+          <Typography style={styles.userMessage}>{item.content}</Typography>
           <Typography style={styles.userTime}>
-            {getTimeInFormat(item.chatTime)}
-          </Typography> 
+            {getDateTimeInFormat(item.createdAt)}
+          </Typography>
       </Card>
     </div>
   );
@@ -35,7 +33,7 @@ const styles = {
   parentView: {
     marginLeft: "2%",
     maxWidth: "60%",
-    justifyContent: "flex-start", 
+    justifyContent: "flex-start",
     flexDirection: "row",
     display: "flex"
   },
@@ -68,13 +66,13 @@ const styles = {
     alignSelf: "flex-end",
     marginRight: -10
   },
-  cardView: { 
+  cardView: {
     backgroundColor: "#FFF",
     paddingTop: 5,
     paddingLeft: 8,
     paddingRight: 8,
     paddingBottom: 3,
     marginTop: 2,
-    marginBottom: 2, 
+    marginBottom: 2,
   }
 };

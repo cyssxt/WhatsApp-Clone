@@ -16,9 +16,7 @@ import {
 } from "./WebStatusReducer";
 import { getStatusModel } from "../../utils/webHelperModels";
 import {
-  createUserStatus,
   setUserStatusViewedForID,
-  getAllUserStatus,
 } from "../../api/webApiController";
 import {
   showToast,
@@ -49,17 +47,6 @@ export function getStatus(statusData, dispatch) {
 
 export async function getUserStatusFromAPI(dispatch) {
   const id = getLocalData(webConstants.USER_ID);
-  const res = await getAllUserStatus();
-  if (res.status === 200) {
-    console.log(res.data);
-    if (res.data.status) {
-      getUserStatusTypes({
-        userId: id,
-        dispatch: dispatch,
-        statusList: res.data.status,
-      });
-    }
-  }
 }
 
 export function getUserStatusTypes({ userId, dispatch, statusList }) {
@@ -128,7 +115,7 @@ export function getStatusView({
   masterStatusList,
   dispatch,
 }) {
-  try { 
+  try {
     if (masterStatusList[index].type) {
       if (masterStatusList[index].type === "RECENT") {
         return (

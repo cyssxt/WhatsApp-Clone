@@ -1,30 +1,16 @@
 import React, { useState } from "react";
 import {
   WHITE,
-  GREEN,
-  GRAY,
   TEXT_TITLE,
-  LIGHT_GRAY,
-  TEXT_DESCRIPTION,
   MENU_GRAY,
-  RED,
   HEADER_COLOR
 } from "../../utils/webColors";
 import {
   Avatar,
-  Input,
-  Button,
-  Paper,
-  Card,
-  InputBase,
-  TextField,
   TextareaAutosize
 } from "@material-ui/core";
 import { Mood, Mic } from "@material-ui/icons";
-import { makeStyles } from "@material-ui/styles";
-import { webConstants } from "../../utils/webConstants";
-
-const ChatTextInput = ({ onSendMessage, onTyping }) => {
+const ChatTextInput = ({ onSendMessage, onTyping,handleOpen }) => {
   const [message, setMessage] = useState("");
 
   function handleKeyDown(event) {
@@ -33,13 +19,12 @@ const ChatTextInput = ({ onSendMessage, onTyping }) => {
       onSendMessage(message);
       setMessage("");
     }
-  } 
-
+  }
   return (
-    // <Paper elevation={webConstants.PAPER_ELEVATION}>
     <div style={styles.parentView}>
       <div style={styles.smileView}>
         <Mood style={styles.menuIcons} />
+        <span onClick={handleOpen}  style={{display:"inline-block","height":"30px"}}>快捷语音</span>
       </div>
       {/* <div style={{ width: "90%", justifyContent: "center", maxHeight: 120 }}>  */}
       <TextareaAutosize
@@ -64,7 +49,6 @@ const ChatTextInput = ({ onSendMessage, onTyping }) => {
         </Avatar>
       </div>
     </div>
-    // </Paper>
   );
 };
 
@@ -85,7 +69,7 @@ const styles = {
     alignSelf: "center"
   },
   sendIconView: {
-    flex: 0.05,
+    flex: 1,
     paddingLeft: 10,
     backgroundColor: HEADER_COLOR,
     justifyContent: "center",
@@ -120,13 +104,15 @@ const styles = {
     width: 30,
     height: 30,
     color: MENU_GRAY,
-    alignSelf: "center"
+    alignSelf: "center",
+    verticalAlign: "middle"
   },
   smileView: {
-    flex: 0.05,
-    paddingLeft: 15,
+    width:'120px',
+    paddingLeft: '15px',
     alignSelf: "center",
     backgroundColor: HEADER_COLOR,
-    justifyContent: "center"
+    justifyContent: "center",
+    verticalAlign: 'middle'
   }
 };

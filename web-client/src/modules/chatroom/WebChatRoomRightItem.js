@@ -1,30 +1,22 @@
 import React from "react";
 import {
   GRAY,
-  BLACK,
-  APP_BG_COLOR,
-  GREEN,
   WHITE,
   LIGHT_GREEN,
   TEXT_TITLE
 } from "../../utils/webColors";
-import moment from "moment";
-import { webConstants } from "../../utils/webConstants";
-import { getTimeInFormat } from "../../utils/webHelperFunctions";
+import {getDateTimeInFormat, getTimeInFormat} from "../../utils/webHelperFunctions";
 import { Card, Typography, Avatar } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
-import PROFILE from "../../assets/images/profile2.jpg";
 
 const ChatRoomRightItem = ({ item, styleList }) => {
-  // const styles = useStyles();
 
   return (
     <div style={Object.assign({}, styles.parentView, styleList)}>
       {/* <Avatar style={styles.profileImage} src={PROFILE} /> */}
       <Card style={styles.cardView} variant={'elevation'} elevation={0.9}>
-        <Typography style={styles.userMessage}>{item.chatMessage}</Typography>
+        <Typography style={styles.userMessage}>{item.content}</Typography>
         <Typography style={styles.userTime}>
-          {getTimeInFormat(item.chatTime)}
+          {getDateTimeInFormat(item.createdAt)}
         </Typography>
       </Card>
     </div>
@@ -90,13 +82,13 @@ const styles = {
     justifyContent: "center",
     alignSelf: "center"
   },
-  cardView: {  
+  cardView: {
     backgroundColor: "#E1FFC7",
     paddingTop: 5,
     paddingLeft: 8,
     paddingRight: 8,
     paddingBottom: 3,
     marginTop: 2,
-    marginBottom: 2, 
+    marginBottom: 2,
   }
 };

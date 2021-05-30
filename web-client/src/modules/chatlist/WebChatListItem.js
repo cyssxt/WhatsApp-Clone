@@ -1,16 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   GRAY,
   WHITE,
   LIGHT_GREEN,
-  TEXT_TITLE,
-  LIGHT_GRAY,
-  APP_BG_COLOR,
   LIGHT_GRAY_0
 } from "../../utils/webColors";
-import moment from "moment";
-import PROFILE from "../../assets/images/user.png";
-import { webConstants } from "../../utils/webConstants";
 import { getTimeInFormat, getUserType } from "../../utils/webHelperFunctions";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -23,13 +17,12 @@ import {
   Typography
 } from "@material-ui/core";
 import chatImage from "../../assets/svg/chatImage.svg";
-import { styles } from "../status/WebStatusView";
+import "./WebChatListItem.css";
 
-const WebChatListItem = ({ item, position, onItemClick }) => {
-  const [userType, setUserType] = useState("");
+const WebChatListItem = ({ item, position, onItemClick,currentIndex }) => {
   const classes = useStyles();
-
-  let data = item.chat[0];
+  // debugger
+  let data = item;
 
   useEffect(() => {
     setUserName();
@@ -37,14 +30,13 @@ const WebChatListItem = ({ item, position, onItemClick }) => {
 
   function setUserName() {
     let userType = getUserType(item);
-    setUserType(userType);
   }
 
   return (
-    <div style={{cursor:'pointer'}} onClick={() => onItemClick(item)}>
+    <div style={{cursor:'pointer'}} className={`chat-list-item ${currentIndex==position?'active':''}`} onClick={() => onItemClick(item)}>
       {position > 0 && (
         <div
-          light={true}
+          light={"true"}
           className={classes.parentDiv}
         />
       )}
@@ -71,9 +63,7 @@ const WebChatListItem = ({ item, position, onItemClick }) => {
           <ListItemText
             primary={
               <Typography className={classes.userName}>
-                {userType == webConstants.FRIEND
-                  ? data.userName
-                  : data.chatName}
+                {`${data.name||data.notify}-${data.jid.split("@")[0]}`}
               </Typography>
             }
           />
@@ -88,86 +78,30 @@ const WebChatListItem = ({ item, position, onItemClick }) => {
         <ListItemText
           style={{
             display: "flex",
-            flex: 0.15,
+            flex: 0.35,
             justifyContent: "flex-end",
             alignItems: "flex-end",
             flexDirection: "column"
           }}
           primary={
-            <Typography className={classes.userTime}>
-              {getTimeInFormat(data.chatTime)}
+            <Typography className={classes.userTime} style={{width:"120px"}}>
+              {getTimeInFormat(data.t)}
             </Typography>
           }
           secondary={
-            <Avatar className={item.chatUnreadCount != 0 ? classes.avatarStyle : classes.emptyAvatarStyle}>
+            <Avatar className={item.count != 0 ? classes.avatarStyle : classes.emptyAvatarStyle}>
               <Typography className={classes.textMsgCount}>
-                {item.chatUnreadCount}
+                {item.count}
               </Typography>
             </Avatar>
           }
         />
       </ListItem>
-
-      {/* <Card transparent style={{ elevation: 0, marginRight: -5 }}>
-        <CardItem>
-          <View style={{ marginLeft: -5 }}>
-            <Thumbnail
-              source={
-                data.chatImage === ""
-                  ? PROFILE
-                  : { isStatic: true, uri: data.chatImage }
-              }
-            />
-          </View>
-          <Body
-            style={{
-              flexDirection: "column",
-              marginLeft: 15
-            }}
-          >
-            <Text
-              numberOfLines={1}
-              style={[DEFAULT_STYLES.poppinsSemiBold, styles.userName]}
-            >
-              {userType == webConstants.FRIEND ? data.userName : data.chatName}
-            </Text>
-
-            <Text
-              numberOfLines={2}
-              style={[DEFAULT_STYLES.poppinsLight, styles.userMessage]}
-            >
-              {data.chatMessage}
-            </Text>
-          </Body>
-          <View>
-            <Text style={[DEFAULT_STYLES.poppinsSemiBold, styles.userTime]}>
-              {getTimeInFormat(item.chatTime)}
-            </Text>
-            {data.chatUnreadCount === "" && (
-              <View style={styles.textMsgCountView}>
-                <Text
-                  style={[DEFAULT_STYLES.poppinsSemiBold, styles.textMsgCount]}
-                >
-                  {data.chatUnreadCount}
-                </Text>
-              </View>
-            )}
-            {data.chatUnreadCount != "" && (
-              <Icon
-                style={styles.msgIcon}
-                name={data.chatUnreadCount}
-                type={data.chatUnreadCount}
-              />
-            )}
-          </View>
-        </CardItem>
-      </Card> */}
     </div>
   );
 };
 
 export default WebChatListItem;
-
 const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
@@ -184,7 +118,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "row",
     display: "flex",
     marginLeft: "auto",
-    marginRight: 0, 
+    marginRight: 0,
     fontFamily:'Roboto'
   },
   inline: {
@@ -209,7 +143,7 @@ const useStyles = makeStyles(theme => ({
     alignSelf: "flex-start",
     textOverflow: "ellipsis",
     overflow: "hidden",
-    whiteSpace: "nowrap", 
+    whiteSpace: "nowrap",
     fontFamily:'Roboto'
   },
   userTime: {
@@ -263,6 +197,6 @@ const useStyles = makeStyles(theme => ({
     color: WHITE,
     fontWeight: "bold",
     justifyContent: "center",
-    alignSelf: "center", 
+    alignSelf: "center",
   }
 }));

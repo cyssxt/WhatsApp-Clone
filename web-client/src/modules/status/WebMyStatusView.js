@@ -47,7 +47,7 @@ const WebMyStatusView = ({ style, statusData, isUser, isBorder, dispatch }) => {
           marginLeft: "3%",
         }}
       >
-        <Typography numberOfLines={1} style={styles.userName}>
+        <Typography  style={styles.userName}>
           {isUser ? "My Status" : statusData.userName}
         </Typography>
         <WebTimeElapsed
@@ -60,7 +60,7 @@ const WebMyStatusView = ({ style, statusData, isUser, isBorder, dispatch }) => {
           // interval={1000}
           isValid={statusData != ""}
         />
-        {/* <Typography numberOfLines={2} style={styles.userMessage}>
+        {/* <Typography style={styles.userMessage}>
           No updates
         </Typography> */}
       </div>

@@ -10,7 +10,6 @@ import { SELECTED_STATUS } from "../modules/status/WebStatusReducer";
 
 const WebZoneStatusComponent = ({ statusData, onCancelClick, dispatch }) => {
   const classes = useStyles();
-  console.log(statusData.image);
   return (
     <div className={classes.parent}>
       <img
@@ -41,7 +40,7 @@ const WebZoneStatusComponent = ({ statusData, onCancelClick, dispatch }) => {
                 justifyContent: "center",
                 alignSelf: "center",
                 display: "flex",
-                flexDirection: "column", 
+                flexDirection: "column",
                 maxWidth: 150,
                 cursor:'pointer'
               }}
@@ -79,7 +78,7 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     alignSelf: "center",
-    justifyContent: "center", 
+    justifyContent: "center",
     display: "flex",
     fontFamily:'Roboto'
   },

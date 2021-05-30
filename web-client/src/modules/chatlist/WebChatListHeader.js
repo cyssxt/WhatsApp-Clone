@@ -11,21 +11,26 @@ import {
   MENU_GRAY
 } from "../../utils/webColors";
 import USER from "../../assets/images/profile2.jpg";
-import CHAT from "../../assets/images/chat.png";
-import { getTimeInFormat, getUserType } from "../../utils/webHelperFunctions";
-import { webConstants } from "../../utils/webConstants";
-import { Avatar, Typography, Card } from "@material-ui/core";
-import { DonutLarge, AttachFile, MoreVert, Chat } from "@material-ui/icons";
+import { Avatar } from "@material-ui/core";
+import { MoreVert, Chat } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
-import STATUS from "../../assets/svg/statusHeader.svg"; 
+import STATUS from "../../assets/svg/statusHeader.svg";
+import {getUserInfo} from "../../api/webApiController";
 
 const WebChatListHeader = ({ onChatClick, onStatusClick }) => {
   const styles = useStyles();
-
+  const [user,setUser] = useState({});
+  useEffect(()=>{
+    getUserInfo().then((res)=>{
+      console.log(res.data.data);
+      setUser(res.data.data);
+    })
+  },[]);
   return (
     <div className={styles.parentView}>
       <div style={{ width: "20%", marginLeft: "4%", alignSelf: "center" }}>
-        <Avatar src={USER} className={styles.profileIcon} />
+        <Avatar src={user?.extend?.imgUrl?user.extend.imgUrl:USER} className={styles.profileIcon} />
+        {user.extend?.name}
       </div>
       <div
         style={{

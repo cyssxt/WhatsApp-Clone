@@ -7,21 +7,6 @@ const WebEmptyComponent = ({ message }) => {
   const classes = useStyles();
 
   return (
-    <html className={classes.parent}>
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-        />
-        <meta
-          name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width"
-        />
-      </head>
       <div className={classes.parent}>
         <img
           alt={"Chat"}
@@ -31,7 +16,6 @@ const WebEmptyComponent = ({ message }) => {
         />
         <p style={{ fontSize: 16, color: GRAY, marginTop: 5 }}>{message}</p>
       </div>
-    </html>
   );
 };
 
@@ -45,7 +29,7 @@ const useStyles = makeStyles({
     justifyContent: "center",
     display: "flex",
     fontFamily:'Roboto',
-    flex:1, 
+    flex:1,
   },
   alertIcon: {
     height: 60,

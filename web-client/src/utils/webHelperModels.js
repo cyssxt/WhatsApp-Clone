@@ -30,7 +30,7 @@ export const getContactsChatModel = item => {
         chatNumberType: item.numberType,
         chatImage: "",
         chatTime: "",
-        chatDelivery: 0, 
+        chatDelivery: 0,
       }
     ]
   };
@@ -58,7 +58,7 @@ export const getChatRoomChatModel = (chatItem, isNewChat, userId, text) => {
       chatNumber: chatItem.chat[0].chatNumber,
       chatImage: chatItem.chat[0].chatImage,
       chatTime: moment().format(),
-      chatDelivery: 0, 
+      chatDelivery: 0,
     }
   };
   return chatRequest;
@@ -72,16 +72,16 @@ export const getChatListModel = (item, isNewChat, chatUnreadCount) => {
     chatId: item.chatId,
     chatUnreadCount: chatUnreadCount,
     chat: {
-      userId: item.chat[0].userId,
-      userName: item.chat[0].userName,
-      chatId: item.chat[0].chatId,
-      chatName: item.chat[0].chatName,
-      chatMessage: item.chat[0].chatMessage,
-      chatNumber: item.chat[0].chatNumber,
-      chatNumberType: item.chat[0].chatNumberType,
-      chatImage: item.chat[0].chatImage,
-      chatTime: item.chat[0].chatTime,
-      chatDelivery: item.chat[0].chatDelivery, 
+      userId: item.messages[0].userId,
+      userName: item.messages[0].userName,
+      chatId: item.messages[0].chatId,
+      chatName: item.messages[0].chatName,
+      chatMessage: item.messages[0].chatMessage,
+      chatNumber: item.messages[0].chatNumber,
+      chatNumberType: item.messages[0].chatNumberType,
+      chatImage: item.messages[0].chatImage,
+      chatTime: item.messages[0].chatTime,
+      chatDelivery: item.messages[0].chatDelivery,
     },
   };
 };

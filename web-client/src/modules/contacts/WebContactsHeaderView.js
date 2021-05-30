@@ -23,10 +23,10 @@ const WebContactsHeaderView = ({ item, onChatCloseClick }) => {
           alignSelf: "center"
         }}
       >
-        <Typography numberOfLines={1} style={styles.userName}>
+        <Typography  style={styles.userName}>
           Select contact
         </Typography>
-        <Typography numberOfLines={2} style={styles.userMessage}>
+        <Typography style={styles.userMessage}>
           {item} contacts
         </Typography>
       </div>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   CardContent,
@@ -17,33 +17,28 @@ import {
 import QRCode from "qrcode.react";
 import { TEXT_TITLE } from "../../utils/webColors";
 import Icon from "@material-ui/icons/WhatsApp";
-import { webConstants } from "../../utils/webConstants";
-import {
-  storeLocalData,
-  getSocket,
-  getLocalData,
-} from "../../utils/webHelperFunctions";
-
-var socket = getSocket();
+import {getSocket} from "../../api/socketApi";
+import {webConstants} from "../../utils/webConstants";
+import EventConstant from "../../constants/EventConstant";
+import {useHistory} from "react-router-dom";
 
 const ScanCodeView = ({ params }) => {
   const classes = useStyles();
-
+  const [qrCode, setQrCode] = useState("");
+  const history = useHistory();
   useEffect(() => {
-    socket.on(webConstants.SCAN_QR_CODE, (msg) => {
-      console.log("SCAN_QR_CODE", msg);
-      if (msg) {
-        storeLocalData(webConstants.ACCESS_TOKEN, msg.token);
-        storeLocalData(webConstants.USER_ID, msg.userId);
-        storeLocalData(webConstants.USER_NAME, msg.userName);
-        socket.removeListener(webConstants.SCAN_QR_CODE);
-        window.location.hash = "/chat";
-      }
-      console.log(msg);
-    });
+    let socket = getSocket();
+    socket.on(webConstants.QR_CODE,(data)=>{
+      console.log(data)
+      setQrCode(data);
+    })
+    socket.on(EventConstant.LOGIN_SUCCESS,()=>{
+      history.push("/chat");
+    })
+
+    socket.emit(webConstants.GET_QRCODE);
 
     return () => {
-      socket.removeListener(webConstants.SCAN_QR_CODE);
     };
   }, []);
 
@@ -126,11 +121,11 @@ const ScanCodeView = ({ params }) => {
                   </Typography>
                 </div>
                 <div className={classes.codeDivStyle}>
-                  <QRCode
-                    size={300}
-                    value="Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                      Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                  />
+                  {qrCode ?<QRCode
+                      size={300}
+                      value={qrCode}
+                  />:<></>
+                  }
                   <div
                     style={{
                       display: "flex",

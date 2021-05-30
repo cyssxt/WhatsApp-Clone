@@ -11,7 +11,6 @@ api.interceptors.request.use(
   (request) => {
     const token = getLocalData(webConstants.ACCESS_TOKEN);
     request.headers = { Authorization: token };
-    console.log("Request Interceptor = ", request);
     return request;
   },
   (error) => {
@@ -23,7 +22,6 @@ api.interceptors.request.use(
 // Add a response interceptor
 api.interceptors.response.use(
   (response) => {
-    console.log("Response Interceptor = ", JSON.stringify(response.data));
     return response;
   },
   (error) => {
@@ -33,7 +31,8 @@ api.interceptors.response.use(
 );
 
 export const getChatList = () => {
-  return api.get(webConstants.API.CHAT_LIST);
+    let userId = localStorage.getItem("userId");
+    return api.get(`${webConstants.API.CHAT_LIST}/${userId}`);
 };
 export const getChatRoom = (payload) => {
   return api.post(webConstants.API.CHAT_ROOM, payload);
@@ -57,12 +56,30 @@ export const getLastSeenUser = (payload) => {
   return api.post(webConstants.API.LAST_SEEN, payload);
 };
 
+export const getUserId = ()=>{
+    return api.get(webConstants.API.USER_ID);
+}
+export const getUserInfo = ()=>{
+    let userId = localStorage.getItem("userId");
+    return api.get(`${webConstants.API.USER_INFO}/${userId}`);
+}
+
+export const getRecentMsg = (remoteJid)=>{
+    let userId = localStorage.getItem("userId");
+    return api.get(`${webConstants.API.GET_RECENT_MSG}/${userId}/${remoteJid}`);
+}
+
 export const createUserStatus = (payload) => {
   return api.post(webConstants.API.CREATE_USER_STATUS, payload);
 };
 
 export const getAllUserStatus = () => {
   return api.get(webConstants.API.GET_ALL_STATUS);
+};
+
+export const getContacts = () => {
+    let userId = localStorage.getItem("userId");
+  return api.get(`${webConstants.API.CONTACTS_LIST}/${userId}`);
 };
 
 export const setUserStatusViewedForID = (payload) => {

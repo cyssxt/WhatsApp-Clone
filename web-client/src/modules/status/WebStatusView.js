@@ -27,12 +27,14 @@ import {
   STATUS_LIST,
   SELECTED_STATUS,
 } from "./WebStatusReducer";
-import { getLocalData, getSocket } from "../../utils/webHelperFunctions";
+import { getLocalData,
+  // getSocket
+} from "../../utils/webHelperFunctions";
 import { WebStatusProgressView } from "../../components/WebStatusProgressView";
 import { Animated } from "react-animated-css";
 import WebZoneStatusComponent from "../../components/WebZoneStatusComponent";
 
-const socket = getSocket();
+// const socket = getSocket();
 
 const WebStatusView = ({ onCancelClick }) => {
   var [state, dispatch] = useReducer(statusReducer, statusState);
@@ -58,13 +60,13 @@ const WebStatusView = ({ onCancelClick }) => {
 
   function listenSocket() {
     // socket.removeListener(webConstants.CHAT_LIST);
-    socket.on(webConstants.USER_STATUS, async (statusModel) => {
-      const id = getLocalData(webConstants.USER_ID);
-      if (statusModel.userId != id) {
-        console.log("STATUS RECEIVED");
-        getUserStatusFromAPI(dispatch);
-      }
-    });
+    // socket.on(webConstants.USER_STATUS, async (statusModel) => {
+    //   const id = getLocalData(webConstants.USER_ID);
+    //   if (statusModel.userId != id) {
+    //     console.log("STATUS RECEIVED");
+    //     getUserStatusFromAPI(dispatch);
+    //   }
+    // });
   }
 
   return (
@@ -131,8 +133,8 @@ const WebStatusView = ({ onCancelClick }) => {
         animationOut="fadeOut"
         animationInDuration={600}
         animationOutDuration={1000}
-        isVisible={selectedStatus && selectedStatus != ""}
-        animateOnMount={selectedStatus && selectedStatus != ""}
+        isVisible={!!selectedStatus && selectedStatus != ""}
+        animateOnMount={!!selectedStatus && selectedStatus != ""}
         style={{
           width: "100%",
           position: "absolute",

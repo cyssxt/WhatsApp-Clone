@@ -137,6 +137,7 @@ export const createWAConnection = async (userId:string,SocketMap:any)=>{
     })
     conn.on('qr', async (qr:any) => {
         await saveQrCode(userId,qr);
+        console.log(SocketMap)
         SocketMap[userId].emit("QR_CODE",qr)
     })
     conn.on('initial-data-received', (data) => {

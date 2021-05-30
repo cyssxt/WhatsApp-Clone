@@ -6,7 +6,6 @@ export const createSocket = (http:any)=> {
     const io = require("socket.io")(http)
     io.on("connection", async (socket: any) => {
         let {userId} = socket.handshake.query;
-        SocketMap[userId] = socket;
         console.log(`${userId}-${socket}`)
 
         if(!SocketMap[userId]) {
@@ -15,6 +14,7 @@ export const createSocket = (http:any)=> {
             console.log(connect);
             ConnectionMap[userId] = connect;
         }
+        SocketMap[userId] = socket;
         socket.on("GET_QRCODE", async () => {
             socket.emit("QR_CODE", await getQrCode(userId))
         });

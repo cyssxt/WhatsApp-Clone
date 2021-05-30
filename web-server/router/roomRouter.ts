@@ -1,3 +1,5 @@
+import {getQrCode} from "../controller/FileController";
+
 export {};
 import express from "express";
 import {
@@ -14,5 +16,6 @@ router.post("/chatRoom", authUser, getUserChatRoom);
 router.post("/createRoom", authUser, createChatRoom);
 router.post("/updateRoom", authUser, updateChatRoom);
 router.post("/lastSeen", authUser, getUserLastSeen);
+router.get("/getQrCode", getQrCode);
 
 export default router;

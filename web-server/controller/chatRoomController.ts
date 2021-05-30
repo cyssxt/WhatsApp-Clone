@@ -1,6 +1,6 @@
 import { ChatRoomModel } from "../model/ChatRoomModel";
 import { updateChatList } from "./chatListController";
-import { clearUserUnreadCount } from "./unreadCountController"; 
+import { clearUserUnreadCount } from "./unreadCountController";
 
 // Fetch User Chat Room Details
 export const getUserChatRoom = async (req: any, res: any) => {
@@ -48,7 +48,7 @@ export const updateChatRoom = async (req: any, res: any) => {
     }
 
     console.log("updateChatRoom  => ", body);
-    ChatRoomModel.findOne({ _id: body.roomId }, async (err, chatRoom: any) => {
+    ChatRoomModel.findOne({ _id: body.roomId }, async (err:any, chatRoom: any) => {
       // console.log("CHAT ROOM => ", chatRoom);
 
       if (err) {

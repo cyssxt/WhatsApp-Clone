@@ -1,0 +1,9 @@
+[submodule "web-server/Baileys"]
+	path = web-server/Baileys
+	url = git@github.com:cyssxt/Baileys.git
+[submodule "web-server/whatsapp-constant"]
+	path = web-server/whatsapp-constant
+	url = git@github.com:cyssxt/whatsapp-constant.git
+[submodule "web-client/src/constants"]
+	path = web-client/src/constants
+	url = git@github.com:cyssxt/whatsapp-constant.git

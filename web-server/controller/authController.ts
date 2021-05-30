@@ -1,4 +1,6 @@
 import { LoginUserModel } from "../model/LoginUserModel";
+import { v4 as uuidv4 } from 'uuid';
+import {UserInfoModel} from "../model/UserInfoModel";
 
 // User Login
 export const loginUser = async (req: any, res: any) => {
@@ -67,3 +69,17 @@ export const getLoggedInUserList = async (req: any, res: any) => {
     return res.status(200).json({ success: false, message: err });
   }
 };
+
+export const getUserId = async (req:any,res:any)=>{
+  let userId = uuidv4();
+  let createdAt = new Date();
+  let userInfoModel:any = new UserInfoModel({userId,createdAt});
+  await userInfoModel.save().catch((e:any)=>{
+    console.error(e)
+  });
+  return res.status(200).json({ success: true, data: userId });
+}
+
+export const getQrCode = async ()=>{
+
+}

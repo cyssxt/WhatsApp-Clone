@@ -1,3 +1,4 @@
 {
-  "privateKey": "myprivatekey"
+  "privateKey": "myprivatekey",
+  "qrCodePath": "/tmp"
 }

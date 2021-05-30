@@ -13,7 +13,6 @@ import {
     WALocationMessage
 } from "../Baileys/src";
 import {getMsg, saveMsg} from "./UserMsgController";
-import {testJid} from "../Baileys/src/Tests/Common";
 import {SocketMap} from "./SocketConnections";
 let ConnectionMap:any = {};
 

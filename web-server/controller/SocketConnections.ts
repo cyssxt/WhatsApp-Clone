@@ -1,22 +1,20 @@
-import {createWAConnection, getQrCode, getUserInfo} from "./UserInfoController";
-import EventConstant from "../whatsapp-constant/EventConstant";
+import {createWAConnection, getQrCode} from "./UserInfoController";
 import {MessageType, Mimetype, Presence} from "../Baileys";
-import {UserInfoModel} from "../model/UserInfoModel";
 export const SocketMap:any = {}
 export const ConnectionMap:any={}
 export const createSocket = (http:any)=> {
     const io = require("socket.io")(http)
     io.on("connection", async (socket: any) => {
         let {userId} = socket.handshake.query;
-        console.log("Socket.io connected");
-        // checkQrCode(userId,socket);
+        SocketMap[userId] = socket;
+        console.log(`${userId}-${socket}`)
+
         if(!SocketMap[userId]) {
             let connect = await createWAConnection(userId,SocketMap);
             console.log('-------')
             console.log(connect);
             ConnectionMap[userId] = connect;
         }
-        SocketMap[userId] = socket;
         socket.on("GET_QRCODE", async () => {
             socket.emit("QR_CODE", await getQrCode(userId))
         });

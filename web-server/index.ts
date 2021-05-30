@@ -13,6 +13,8 @@ import {getChats} from "./controller/ChatController";
 import {getContacts} from "./controller/ContactController";
 import {getUserInfo, logout} from "./controller/UserInfoController";
 import {getRecentMsg} from "./controller/UserMsgController";
+import {download} from "./controller/FileController";
+import router from "./router/roomRouter";
 // Express setup -----
 const app = express();
 expressWs(app);
@@ -30,6 +32,7 @@ app.get("/chats/:userId", getChats);
 app.get("/getUserInfo/:userId", getUserInfo);
 app.get("/logout/:userId", logout);
 app.get("/getRecentMsg/:userId/:remoteJid", getRecentMsg);
+app.get("/download/:fileName", download);
 
 const port = process.env.PORT || 3000;
 

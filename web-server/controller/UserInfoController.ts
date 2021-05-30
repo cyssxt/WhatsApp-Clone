@@ -5,25 +5,14 @@ import EventConstant from "../whatsapp-constant/EventConstant";
 import {updateChat} from "./ChatController";
 import {updateContacts} from "./ContactController";
 import {
-    MessageOptions,
     MessageType,
-    Mimetype,
-    Presence,
     WA_MESSAGE_STUB_TYPES,
     WALocationMessage
 } from "../Baileys/src";
 import {getMsg, saveMsg} from "./UserMsgController";
 import {SocketMap} from "./SocketConnections";
+import config from "config";
 let ConnectionMap:any = {};
-
-setInterval(()=>{
-    for(let key in ConnectionMap){
-        let {connection,createAt,loginFlag} = ConnectionMap[key];
-        if(new Date().getTime()-createAt.getTime()>1000*60*10 && !loginFlag){
-            connection.close();
-        }
-    }
-},60*1000*5);
 
 export const getUserInfo = async (req:any,res:any)=>{
     let {userId} = req.params
@@ -87,9 +76,11 @@ export const parseMessage = async (userId:string,m:any,conn:WAConnection)=>{
         const locMessage = m.message[messageType] as WALocationMessage
         console.log(`${sender} sent location (lat: ${locMessage.degreesLatitude}, long: ${locMessage.degreesLongitude})`)
         content = locMessage;
-        let data = await conn.downloadAndSaveMediaMessage(m, './Media/media_loc_thumb_in_' + m.key.id) // save location thumbnail
-        console.log(`>>>>>>>>${data}`)
-
+        let mediaPath = config.get('mediaPath');
+        let fullPath = `${mediaPath}/media_loc_thumb_in_${m.key.id}`;
+        let data = await conn.downloadAndSaveMediaMessage(m, fullPath,true) // save location thumbnail
+        let index = data.lastIndexOf("/")
+        content = data.substring(index+1);
         if (messageType === MessageType.liveLocation) {
             console.log(`${sender} sent live location for duration: ${m.duration/60}`)
         }
@@ -97,10 +88,12 @@ export const parseMessage = async (userId:string,m:any,conn:WAConnection)=>{
         // if it is a media (audio, image, video, sticker) message
         // decode, decrypt & save the media.
         // The extension to the is applied automatically based on the media type
-        let path = './Media/media_in_' + m.key.id;
+        let mediaPath = config.get('mediaPath');
+        let fileName = `${mediaPath}/media_loc_thumb_in_${m.key.id}`;
         try {
-            const savedFile = await conn.downloadAndSaveMediaMessage(m, path)
-            content = path;
+            const savedFile = await conn.downloadAndSaveMediaMessage(m, fileName,true)
+            let index = savedFile.lastIndexOf("/")
+            content = savedFile.substring(index+1);
             console.log(sender + ' sent media, saved at: ' + savedFile)
         } catch (err) {
             console.log('error in decoding message: ' + err)
@@ -133,17 +126,11 @@ export const createWAConnection = async (userId:string,SocketMap:any)=>{
     conn.on('chats-received', async ({ hasNewChats }:{hasNewChats:any}) => {
         await updateChat(userId,JSON.parse(JSON.stringify(conn.chats)))
         SocketMap[userId].emit(EventConstant.CHAT_LIST,conn.chats)
-        console.log(`you have ${conn.chats.length} chats, new chats available: ${hasNewChats}`)
         ConnectionMap[userId] = {...ConnectionMap[userId],loginFlag:true,loginDate:new Date()}
     })
     conn.on('contacts-received', async() => {
-        console.log(JSON.stringify(conn.contacts))
-
         await updateContacts(userId,JSON.parse(JSON.stringify(conn.contacts)))
-        // console.log(`you have ${Object.keys(conn.contacts).length} contacts`)
         SocketMap[userId].emit(EventConstant.CONTACTS_LIST,conn.contacts);
-        //     conn.sendMessage("85252608837@s.whatsapp.net", {url:`https://vlovef.oss-cn-hangzhou.aliyuncs.com/static/service.png`
-        // },MessageType.image,{ mimetype: Mimetype.png,ptt:true});
     })
     conn.on("login-success",async(user:any)=>{
         let result = await onLoginSuccess(userId,user.jid,user);
@@ -151,7 +138,6 @@ export const createWAConnection = async (userId:string,SocketMap:any)=>{
     })
     conn.on('qr', async (qr:any) => {
         await saveQrCode(userId,qr);
-        console.log(SocketMap)
         SocketMap[userId].emit("QR_CODE",qr)
     })
     conn.on('initial-data-received', (data) => {

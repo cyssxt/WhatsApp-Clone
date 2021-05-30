@@ -5,7 +5,7 @@ import {
   LIGHT_GREEN,
   TEXT_TITLE
 } from "../../utils/webColors";
-import {getDateTimeInFormat, getTimeInFormat} from "../../utils/webHelperFunctions";
+import {getContentInfo, getDateTimeInFormat, getTimeInFormat} from "../../utils/webHelperFunctions";
 import { Card, Typography, Avatar } from "@material-ui/core";
 
 const ChatRoomRightItem = ({ item, styleList }) => {
@@ -14,7 +14,7 @@ const ChatRoomRightItem = ({ item, styleList }) => {
     <div style={Object.assign({}, styles.parentView, styleList)}>
       {/* <Avatar style={styles.profileImage} src={PROFILE} /> */}
       <Card style={styles.cardView} variant={'elevation'} elevation={0.9}>
-        <Typography style={styles.userMessage}>{item.content}</Typography>
+        <Typography style={styles.userMessage}>{getContentInfo(item)}</Typography>
         <Typography style={styles.userTime}>
           {getDateTimeInFormat(item.createdAt)}
         </Typography>

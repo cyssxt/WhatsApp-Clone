@@ -1,4 +1,5 @@
 {
   "privateKey": "myprivatekey",
-  "qrCodePath": "/tmp"
+  "qrCodePath": "/tmp",
+  "mediaPath": "/Users/xutao/IdeaProjects/WhatsApp-Clone/web-server/Media"
 }

@@ -1,24 +1,20 @@
 import React, { useState } from "react";
 import {
   GRAY,
-  TEXT_DESCRIPTION,
-  APP_BG_COLOR,
-  GREEN,
-  WHITE,
-  LIGHT_GREEN,
   TEXT_TITLE
 } from "../../utils/webColors";
-import {getDateTimeInFormat} from "../../utils/webHelperFunctions";
+import {getContentInfo, getDateTimeInFormat} from "../../utils/webHelperFunctions";
 import { Card, Typography } from "@material-ui/core";
 
 const ChatRoomLeftItem = ({ item, styleList }) => {
-  // const styles = useState();
 
   return (
     <div style={Object.assign({}, styles.parentView, styleList)}>
       {/* <Avatar style={styles.profileImage} src={PROFILE} /> */}
       <Card style={styles.cardView} variant={'elevation'} elevation={0.9}>
-          <Typography style={styles.userMessage}>{item.content}</Typography>
+          <Typography style={styles.userMessage}>{
+            getContentInfo(item)
+          }</Typography>
           <Typography style={styles.userTime}>
             {getDateTimeInFormat(item.createdAt)}
           </Typography>

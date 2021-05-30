@@ -1,7 +1,6 @@
 import { webConstants } from "./webConstants";
 import moment from "moment";
-import io from "socket.io-client";
-
+import React from "react";
 export const getTimeInFormat = time => {
   if (time === "") {
     return "";
@@ -17,6 +16,24 @@ export const getDateTimeInFormat = time => {
   const newTime = moment(time).format(webConstants.DATE_TIME_FORMAT);
   return newTime;
 };
+
+export const getContentInfo = (item)=>{
+    let messageType = item.messageType
+  console.log(messageType);
+  if(messageType!="conversation" && messageType!="extendedTextMessage"){
+    let text = null;
+    switch (messageType){
+      case 'audioMessage':
+        text = "音频文件"
+        break;
+      // case 'audioMessage':
+      //   text = "音频文件"
+      //   break;
+    }
+    return <a href={`${webConstants.API.SERVER_URL}/download/${item.content}`} target="_blank">{text}</a>
+  }
+  return item.content
+}
 
 // export const showToast = ({ text, type }) => {
 //   Toast.show({

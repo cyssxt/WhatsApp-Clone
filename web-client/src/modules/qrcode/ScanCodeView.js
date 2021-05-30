@@ -126,6 +126,11 @@ const ScanCodeView = ({ params }) => {
                       value={qrCode}
                   />:<></>
                   }
+                  <div>
+                    <Button type="primary" onClick={()=>{
+                      localStorage.removeItem("userId")
+                      window.location.reload();
+                    }}>清楚缓存</Button></div>
                   <div
                     style={{
                       display: "flex",

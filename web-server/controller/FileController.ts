@@ -1,7 +1,12 @@
 import config from 'config';
-export const getQrCode = (req:any,res:any)=>{
+import * as fs from "fs";
+export const download = (req:any,res:any)=>{
     let {fileName} = req.params;
-    res.setHeader('Content-type', 'image/png');
-    let qrCodePath = config.get('qrCodePath');
-    res.download(`${qrCodePath}/${fileName}`);
+    res.set({
+        "Content-Type":"application/octet-stream",//告诉浏览器这是一个二进制文件
+        "Content-Disposition":`attachment; filename=${fileName}`//告诉浏览器这是一个需要下载的文件
+    });
+    let mediaPath = config.get('mediaPath');
+    // res.download(`${mediaPath}/${fileName}`);
+    fs.createReadStream(`${mediaPath}/${fileName}`).pipe(res);
 }

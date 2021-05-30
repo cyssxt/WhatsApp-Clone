@@ -36,12 +36,6 @@ const WebChatListView = ({ onItemClick, userChatList }) => {
     }
   }, [refresh]);
 
-  useEffect(() => {
-    if (chatItem != "") {
-      renderChats();
-    }
-  }, [chatItem]);
-
   const getLatestChats = () => {
     getChatList()
       .then((res) => {
@@ -57,75 +51,12 @@ const WebChatListView = ({ onItemClick, userChatList }) => {
       });
   };
 
-  async function renderChats() {
-    let chatArray = chatList;
-    console.log("Message CHAT Received => ", JSON.stringify(chatItem));
-
-    var isMatch = false;
-    if (chatArray.length > 0) {
-      for (let i = 0; i < chatArray.length; i++) {
-        const element = chatArray[i];
-        if (chatItem && element.roomId === chatItem.roomId) {
-          // Increment unread count
-          chatItem.chat = [chatItem.chat];
-          // }
-          console.log("Selected Chat Received => ", JSON.stringify(chatItem));
-          chatArray[i] = chatItem;
-          isMatch = true;
-          break;
-        }
-      }
-
-      if (!isMatch && chatItem.chatUnreadCount.type != 'reset') {
-        // Increment unread count
-        chatItem.chat = [chatItem.chat];
-        // }
-        console.log("Selected Chat Received => ", JSON.stringify(chatItem));
-        chatArray.push(chatItem);
-      }
-
-      console.log("Message CHAT AFTER Received => ", JSON.stringify(chatItem));
-
-      dispatch({ type: CHAT_LIST, payload: chatArray });
-      console.log(
-        `FINAL CHAT ARRAY ${refresh} => `,
-        "JSON.stringify(chatArray)"
-      );
-    } else {
-      // For new chat
-      if (chatItem.chatUnreadCount.type === "add") {
-        dispatch({ type: REFRESH, payload: true });
-      }
-    }
-  }
-
   function listenSocket() {
     let socket = getSocket();
     socket.removeListener(EventConstant.CHAT_LIST);
     socket.on(webConstants.CHAT_LIST, (chatItem) => {
-      debugger
-      console.log('-----')
-      console.log(chatItem)
       dispatch({ type: CHAT_ITEM, payload: chatItem });
     });
-  }
-
-  function calcUnreadCount(chatItem, originalCount) {
-    // const userId = getLocalData(webConstants.USER_ID);
-    if (chatItem.chatUnreadCount.userId != userId) {
-      if (chatItem.chatUnreadCount.type === "reset") {
-        chatItem.chatUnreadCount = 0;
-      } else if (chatItem.chatUnreadCount.type === "add") {
-        chatItem.chatUnreadCount = originalCount ? originalCount + 1 : 1;
-      } else {
-        chatItem.chatUnreadCount = 0;
-      }
-    } else if (chatItem.chatUnreadCount.type === "reset") {
-      chatItem.chatUnreadCount = 0;
-    } else {
-      chatItem.chatUnreadCount = originalCount;
-    }
-    return chatItem;
   }
 
   return (

@@ -11,26 +11,42 @@ import {
   MENU_GRAY
 } from "../../utils/webColors";
 import USER from "../../assets/images/profile2.jpg";
-import { Avatar } from "@material-ui/core";
+import {Avatar, Button, Menu, MenuItem} from "@material-ui/core";
 import { MoreVert, Chat } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import STATUS from "../../assets/svg/statusHeader.svg";
-import {getUserInfo} from "../../api/webApiController";
+import {getUserInfo, logout} from "../../api/webApiController";
+import PopupState, {bindMenu, bindTrigger} from "material-ui-popup-state";
 
 const WebChatListHeader = ({ onChatClick, onStatusClick }) => {
   const styles = useStyles();
   const [user,setUser] = useState({});
   useEffect(()=>{
     getUserInfo().then((res)=>{
-      console.log(res.data.data);
       setUser(res.data.data);
     })
   },[]);
   return (
     <div className={styles.parentView}>
       <div style={{ width: "20%", marginLeft: "4%", alignSelf: "center" }}>
-        <Avatar src={user?.extend?.imgUrl?user.extend.imgUrl:USER} className={styles.profileIcon} />
-        {user.extend?.name}
+        <PopupState variant="popover" popupId="demo-popup-menu">
+          {(popupState) => (
+              <React.Fragment>
+                <Button variant="contained" color="primary" {...bindTrigger(popupState)}>
+                  <Avatar src={user?.extend?.imgUrl?user.extend.imgUrl:USER} className={styles.profileIcon} />
+                  {user.extend?.name}
+                </Button>
+                <Menu {...bindMenu(popupState)}>
+                  <MenuItem onClick={async ()=>{
+                    await logout();
+                    localStorage.removeItem("userId");
+                    window.location.href="/"
+                    popupState.close();
+                  }}>退出</MenuItem>
+                </Menu>
+              </React.Fragment>
+          )}
+        </PopupState>
       </div>
       <div
         style={{

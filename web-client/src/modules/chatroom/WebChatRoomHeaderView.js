@@ -1,18 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
-  APP_BG_COLOR,
-  GREEN,
-  INPUT_ORANGE,
-  WHITE,
   GRAY,
-  BLACK,
   TEXT_TITLE,
   HEADER_COLOR,
   MENU_GRAY,
 } from "../../utils/webColors";
-import {
-  getDateTimeInFormat,
-} from "../../utils/webHelperFunctions";
 import { webConstants } from "../../utils/webConstants";
 import { Avatar, Typography } from "@material-ui/core";
 import { Search, AttachFile, MoreVert } from "@material-ui/icons";
@@ -46,7 +38,7 @@ const WebChatRoomHeaderView = ({ item, isNewChat }) => {
         }}
       >
         <Typography className={styles.userName}>
-          { data.name}
+          { data.name}-{data.jid.split("@")[0]}
         </Typography>
         <Typography className={styles.userMessage}>
           {displayLastSeen}

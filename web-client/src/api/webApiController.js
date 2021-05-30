@@ -63,6 +63,10 @@ export const getUserInfo = ()=>{
     let userId = localStorage.getItem("userId");
     return api.get(`${webConstants.API.USER_INFO}/${userId}`);
 }
+export const logout = ()=>{
+    let userId = localStorage.getItem("userId");
+    return api.get(`${webConstants.API.LOGOUT}/${userId}`);
+}
 
 export const getRecentMsg = (remoteJid)=>{
     let userId = localStorage.getItem("userId");

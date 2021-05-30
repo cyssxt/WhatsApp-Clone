@@ -5,6 +5,9 @@ export const webConstants = {
 
     SERVER_URL: "http://127.0.0.1:3000",
     SOCKET_URL: "ws://127.0.0.1:3000/",
+    //
+    // SERVER_URL: "/api",
+    // SOCKET_URL: "",
 
     LOGIN_USER: '/user/loginUser',
     USER_LIST: '/user/userList',
@@ -18,6 +21,7 @@ export const webConstants = {
     SET_STATUS_VIEWED: '/status/statusViewed',
     USER_ID: '/getUserId',
     USER_INFO: '/getUserInfo',
+    LOGOUT: '/logout',
     GET_RECENT_MSG: '/getRecentMsg',
     CONTACTS_LIST: '/contacts',
   },
